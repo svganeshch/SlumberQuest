@@ -19,5 +19,6 @@ public class PlayerMovementManager : CharacterMovementManager
 
         verticalInput = player.playerInputManager.verticalInput;
         horizontalInput = player.playerInputManager.horizontalInput;
+        moveAmount = player.playerInputManager.moveAmount;
     }
 }

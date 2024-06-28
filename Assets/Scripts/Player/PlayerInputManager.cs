@@ -14,10 +14,15 @@ public class PlayerInputManager : MonoBehaviour
 
     // Input actions
     [HideInInspector] public InputAction moveAction;
+    [HideInInspector] public InputAction jumpAction;
+    [HideInInspector] public InputAction sprintAction;
 
     private void Start()
     {
         input = GetComponent<PlayerInput>();
+
+        jumpAction = input.actions["Jump"];
+        sprintAction = input.actions["Sprint"];
 
         moveAction = input.actions["Move"];
         moveAction.performed += value => moveInput = value.ReadValue<Vector2>();
@@ -27,5 +32,16 @@ public class PlayerInputManager : MonoBehaviour
     {
         horizontalInput = moveInput.x;
         verticalInput = moveInput.y;
+
+        moveAmount = Mathf.Clamp01(Mathf.Abs(verticalInput) + Mathf.Abs(horizontalInput));
+
+        if (moveAmount <= 0.5 && moveAmount > 0)
+        {
+            moveAmount = 0.5f;
+        }
+        else if (moveAmount > 0.5f && moveAmount <= 1)
+        {
+            moveAmount = 1;
+        }
     }
 }

@@ -12,6 +12,7 @@ public class CharacterMovementManager : MonoBehaviour
     // input
     protected float verticalInput;
     protected float horizontalInput;
+    protected float moveAmount;
     private Vector3 moveDirection;
 
     // ground checks
@@ -20,6 +21,7 @@ public class CharacterMovementManager : MonoBehaviour
     protected float groundCheckSphereRadius = 0.3f;
     protected float groundedYVelocity = -20;
     protected float fallStartYVelocity = -5;
+    protected float inAirTime = 0;
     protected bool fallingVelocitySet = false;
     private bool isGrounded = false;
 
@@ -47,36 +49,54 @@ public class CharacterMovementManager : MonoBehaviour
 
     protected virtual void HandleGroundedMovement()
     {
+        if (!character.canMove) return;
+
         GetMovementInput();
 
         moveDirection = playerCamera.transform.forward * verticalInput;
         moveDirection += playerCamera.transform.right * horizontalInput;
         moveDirection.Normalize();
         moveDirection.y = 0;
+
         float speed = character.walkingSpeed;
 
+        if (character.characterStateMachine.currentState == character.sprintState)
+            speed = character.sprintSpeed;
+        else if (moveAmount <= 0.5f)
+            speed = character.walkingSpeed;
+        else if (moveAmount > 0.5f)
+            speed = character.runningSpeed;
+
         character.controller.Move(speed * Time.deltaTime * moveDirection);
+
+        character.characterAnimatorManager.SetAnimatorParameters(0, moveAmount);
     }
 
     protected virtual void HandleGroundCheck()
     {
         isGrounded = Physics.CheckSphere(character.transform.position, groundCheckSphereRadius, character.groundLayerMask);
 
+        character.characterAnimatorManager.IsGrounded = isGrounded;
+
         if (isGrounded)
         {
             if (yVelocity.y < 0f)
             {
+                inAirTime = 0;
                 fallingVelocitySet = false;
                 yVelocity.y = groundedYVelocity;
             }
         }
         else
         {
-            //if (character.characterStateMachine.currentState != character.jumpState && !fallingVelocitySet)
-            //{
-            //    fallingVelocitySet = true;
-            //    yVelocity.y = fallStartYVelocity;
-            //}
+            if (character.characterStateMachine.currentState != character.jumpState && !fallingVelocitySet)
+            {
+                fallingVelocitySet = true;
+                yVelocity.y = fallStartYVelocity;
+            }
+
+            inAirTime += Time.deltaTime;
+            character.characterAnimatorManager.InAirTime = inAirTime;
 
             yVelocity.y += gravityForce * Time.deltaTime;
         }
@@ -86,6 +106,8 @@ public class CharacterMovementManager : MonoBehaviour
 
     protected virtual void HandleRotation()
     {
+        if (!character.canRotate) return;
+
         targetRotationDirection = playerCamera.transform.forward * verticalInput;
         targetRotationDirection += playerCamera.transform.right * horizontalInput;
         targetRotationDirection.y = 0f;
