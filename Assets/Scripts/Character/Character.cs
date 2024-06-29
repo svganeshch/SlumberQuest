@@ -17,9 +17,9 @@ public class Character : MonoBehaviour
 
     //FSM
     [HideInInspector] public StateMachine characterStateMachine;
-    [HideInInspector] public IdleState idleState;
-    [HideInInspector] public JumpState jumpState;
-    [HideInInspector] public SprintState sprintState;
+    [HideInInspector] public State idleState;
+    [HideInInspector] public State jumpState;
+    [HideInInspector] public State sprintState;
 
     [Header("Animation Smoothing")]
     public float speedDampTime = 0.1f;
@@ -30,9 +30,9 @@ public class Character : MonoBehaviour
     public float runningSpeed = 5f;
     public float sprintSpeed = 10f;
     public float rotationDampTime = 15f;
+    public Transform lineCast;
 
-    [Header("Layer masks")]
-    public LayerMask groundLayerMask;
+    protected virtual void InitializeStates() { }
 
     protected virtual void Awake()
     {
@@ -40,16 +40,13 @@ public class Character : MonoBehaviour
         controller = GetComponent<CharacterController>();
 
         characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
+
+        characterStateMachine = new StateMachine();
     }
 
     protected virtual void Start()
     {
-        characterStateMachine = new StateMachine();
-        idleState = new IdleState(this, characterStateMachine);
-        jumpState = new JumpState(this, characterStateMachine);
-        sprintState = new SprintState(this, characterStateMachine);
-
-        characterStateMachine.Initialize(idleState);
+        InitializeStates();
     }
 
     protected virtual void Update()

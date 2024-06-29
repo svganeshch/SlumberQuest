@@ -42,6 +42,15 @@ public class Player : Character
         playerInputManager.rewindAction.performed += _ => rewindInput = true;
     }
 
+    protected override void InitializeStates()
+    {
+        idleState = new IdleState(this, characterStateMachine);
+        jumpState = new JumpState(this, characterStateMachine);
+        sprintState = new SprintState(this, characterStateMachine);
+
+        characterStateMachine.Initialize(idleState);
+    }
+
     protected override void Update()
     {
         base.Update();

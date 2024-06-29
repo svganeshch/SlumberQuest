@@ -4,7 +4,7 @@ public class State
 {
     protected Character character;
     protected Player player;
-    //protected Enemy enemy;
+    protected Enemy enemy;
     protected StateMachine stateMachine;
 
     public State(Character _character, StateMachine _stateMachine)
@@ -16,15 +16,15 @@ public class State
         {
             player = p;
         }
-        //else if (_character is Enemy e)
-        //{
-        //    enemy = e;
-        //}
+        else if (_character is Enemy e)
+        {
+            enemy = e;
+        }
     }
 
     public virtual void Enter()
     {
-        // Debug.Log("Entered state " + character.name + " : " + this);
+        Debug.Log("Entered state " + character.name + " : " + this);
     }
 
     public virtual void HandleInput() { }
@@ -35,6 +35,6 @@ public class State
 
     public virtual void Exit()
     {
-        // Debug.Log("Exited state " + character.name + " : " + this);
+        Debug.Log("Exited state " + character.name + " : " + this);
     }
 }

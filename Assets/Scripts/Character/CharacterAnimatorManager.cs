@@ -26,6 +26,8 @@ public class CharacterAnimatorManager : MonoBehaviour
         character = GetComponent<Character>();
     }
 
+    protected virtual void Start() { }
+
     protected virtual void PlayCharacterActionAnimation(
         int animationClipHash,
         bool canRotate = false,
