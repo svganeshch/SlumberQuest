@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,17 +13,16 @@ public class Player : Character
     public float jumpForwardVelocity = 5f;
     public float freeFallControlVelocity = 2f;
 
-    [Header("Rewind Controls")]
-    public List<Vector3> rewindPoints = new();
-
     [HideInInspector] public Camera playerCamera;
     [HideInInspector] public PlayerAnimatorManager playerAnimatorManager;
     [HideInInspector] public PlayerInputManager playerInputManager;
     [HideInInspector] public PlayerMovementManager playerMovementManager;
 
+    public List<GravityEnemy> gravityEnemyList = new();
+    FlipObject flipObject;
+
     // Input bools
     private bool flipInput = false;
-    private bool rewindInput = false;
 
     public bool isRewinding = false;
 
@@ -41,7 +42,6 @@ public class Player : Character
         base.Start();
 
         playerInputManager.flipAction.performed += _ => flipInput = true;
-        playerInputManager.rewindAction.performed += _ => rewindInput = true;
     }
 
     protected override void InitializeStates()
@@ -58,13 +58,19 @@ public class Player : Character
         base.Update();
 
         HandleInputs();
+
+        if (flipObject != null && flipObject.flipSet)
+        {
+            transform.localPosition = Vector3.zero;
+            transform.rotation = Quaternion.identity;
+        }
     }
 
-    protected override void FixedUpdate()
+    protected override void LateUpdate()
     {
-        base.FixedUpdate();
+        base.LateUpdate();
 
-        rewindPoints.Insert(0, transform.position);
+        
     }
 
     private void HandleInputs()
@@ -72,13 +78,6 @@ public class Player : Character
         if (flipInput)
         {
             flipInput = false;
-            //FlipObject();
-        }
-
-        if (rewindInput)
-        {
-            rewindInput = false;
-            SetRewindPoint();
         }
     }
 
@@ -86,24 +85,49 @@ public class Player : Character
     {
         if (hit != null)
         {
-            if (flipInput)
+            if (1 << hit.gameObject.layer == LayerMaskManager.instance.groundLayerMask)
             {
-                if (1 << hit.gameObject.layer == LayerMaskManager.instance.groundLayerMask)
+                Debug.Log("ground : " + hit.gameObject.name);
+
+                if (gravityEnemyList.Count <= 0)
                 {
-                    if (hit.gameObject.TryGetComponent<FlipObject>(out FlipObject fobj))
+                    if (hit.gameObject.TryGetComponent<EnemySpawner>(out EnemySpawner spawner))
                     {
-                        Debug.Log("flip on : " + hit.gameObject.name);
-                        fobj.flipSet = true;
+                        Debug.Log("recevied spawner : " +  spawner.gameObject.name);
+                        foreach (var enemy in spawner.spawnedObjs)
+                        {
+                            gravityEnemyList.Add(enemy.GetComponent<GravityEnemy>());
+                        }
+                    }
+                }
+
+                if (flipInput)
+                {
+                    if (hit.gameObject.TryGetComponent<FlipObject>(out FlipObject flipObject))
+                    {
+                        if (gravityEnemyList.Count > 0)
+                        {
+                            if (gravityEnemyList.All(enemy => enemy.gravityMode == true))
+                            {
+                                Debug.Log("flip on : " + flipObject.name);
+
+                                transform.SetParent(flipObject.transform);
+
+                                canMove = false;
+                                canRotate = false;
+                                disableGravity = true;
+
+                                flipObject.flipSet = true;
+                            }
+                            else
+                            {
+                                Debug.Log("Not all grav enemies are disabled");
+                            }
+                        }
                     }
                 }
             }
         }
-    }
-
-    private void SetRewindPoint()
-    {
-        transform.position = rewindPoints[0];
-        rewindPoints.RemoveAt(0);
     }
 
     public void OnGUI()

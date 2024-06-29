@@ -158,7 +158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isFlippable: 1
   flipSet: 0
-  rotationSpeed: 5
+  rotationSpeed: 0.5
 --- !u!114 &8323492306158534737
 MonoBehaviour:
   m_ObjectHideFlags: 0

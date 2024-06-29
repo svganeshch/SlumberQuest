@@ -23,7 +23,10 @@ public class EnemyPursueState : State
 
         if (enemy.navMeshAgent.remainingDistance >= enemy.navMeshAgent.stoppingDistance + 0.5f)
         {
-
+            if (enemy.TryGetComponent<GravityEnemy>(out GravityEnemy gravityEnemy))
+            {
+                stateMachine.ChangeState(gravityEnemy.enemyGravityState);
+            } 
         }
     }
 }

@@ -21,7 +21,7 @@ public class FlipObject : MonoBehaviour
     {
         if (isFlippable && flipSet)
         {
-            Debug.Log("flip set");
+            //Debug.Log("flip set");
             FlipGameObject();
         }
     }

@@ -10,7 +10,7 @@ public class EnemySpawner : MonoBehaviour
     public bool circleSpawn = false;
 
     public GameObject[] spawnPrefabs;
-    public List<GameObject> spawnedObjs = new List<GameObject>();
+    public List<Enemy> spawnedObjs = new List<Enemy>();
 
     public int patrolPointsCount = 4;
     private List<Vector3> patrolPoints = new List<Vector3>();
@@ -50,7 +50,7 @@ public class EnemySpawner : MonoBehaviour
             GameObject prefabToSpawn = spawnPrefabs[Random.Range(0, spawnPrefabs.Length)];
             GameObject spawnedObj = Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
 
-            spawnedObjs.Add(spawnedObj);
+            spawnedObjs.Add(spawnedObj.GetComponent<Enemy>());
         }
     }
 
@@ -75,7 +75,7 @@ public class EnemySpawner : MonoBehaviour
             spawnedObj.transform.LookAt(transform.position);
 
             // Add the spawned object to the list
-            spawnedObjs.Add(spawnedObj);
+            spawnedObjs.Add(spawnedObj.GetComponent<Enemy>());
         }
     }
 

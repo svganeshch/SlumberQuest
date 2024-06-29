@@ -74,6 +74,8 @@ public class CharacterMovementManager : MonoBehaviour
 
     protected virtual void HandleGroundCheck()
     {
+        if (character.disableGravity) return;
+
         isGrounded = Physics.CheckSphere(character.transform.position, groundCheckSphereRadius, LayerMaskManager.instance.groundLayerMask);
 
         character.characterAnimatorManager.IsGrounded = isGrounded;

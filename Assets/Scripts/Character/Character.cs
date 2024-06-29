@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class Character : MonoBehaviour
 {
     [HideInInspector] public Animator animator;
+    [HideInInspector] public AudioSource audioSource;
     [HideInInspector] public CharacterController controller;
 
     [HideInInspector] public CharacterAnimatorManager characterAnimatorManager;
@@ -13,6 +14,7 @@ public class Character : MonoBehaviour
     // Animation flags
     public bool canMove = true;
     public bool canRotate = true;
+    public bool disableGravity = false;
     public bool applyRootMotion = false;
 
     //FSM
@@ -37,6 +39,7 @@ public class Character : MonoBehaviour
     protected virtual void Awake()
     {
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         controller = GetComponent<CharacterController>();
 
         characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
@@ -54,6 +57,8 @@ public class Character : MonoBehaviour
         characterStateMachine.currentState.HandleInput();
         characterStateMachine.currentState.LogicUpdate();
     }
+
+    protected virtual void LateUpdate() { }
 
     protected virtual void FixedUpdate()
     {
