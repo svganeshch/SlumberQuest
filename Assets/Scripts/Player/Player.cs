@@ -20,6 +20,7 @@ public class Player : Character
     [HideInInspector] public PlayerMovementManager playerMovementManager;
 
     // Input bools
+    private bool flipInput = false;
     private bool rewindInput = false;
 
     public bool isRewinding = false;
@@ -39,6 +40,7 @@ public class Player : Character
     {
         base.Start();
 
+        playerInputManager.flipAction.performed += _ => flipInput = true;
         playerInputManager.rewindAction.performed += _ => rewindInput = true;
     }
 
@@ -67,10 +69,34 @@ public class Player : Character
 
     private void HandleInputs()
     {
+        if (flipInput)
+        {
+            flipInput = false;
+            //FlipObject();
+        }
+
         if (rewindInput)
         {
             rewindInput = false;
             SetRewindPoint();
+        }
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (hit != null)
+        {
+            if (flipInput)
+            {
+                if (1 << hit.gameObject.layer == LayerMaskManager.instance.groundLayerMask)
+                {
+                    if (hit.gameObject.TryGetComponent<FlipObject>(out FlipObject fobj))
+                    {
+                        Debug.Log("flip on : " + hit.gameObject.name);
+                        fobj.flipSet = true;
+                    }
+                }
+            }
         }
     }
 

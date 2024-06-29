@@ -697,9 +697,9 @@ MonoBehaviour:
   sprintSpeed: 10
   rotationDampTime: 35
   lineCast: {fileID: 1542627873541359559}
-  jumpHeight: 5
-  jumpForwardVelocity: 10
-  freeFallControlVelocity: 2
+  jumpHeight: 3
+  jumpForwardVelocity: 8
+  freeFallControlVelocity: 5
   rewindPoints: []
   playerCamera: {fileID: 0}
   playerAnimatorManager: {fileID: 0}
@@ -728,6 +728,15 @@ MonoBehaviour:
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 9f8bda11-4fbb-4df1-bc4f-4ca1c2e7d650
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  flipAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: c2a6655c-b735-4798-bc44-450c60529a5b
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []

@@ -24,7 +24,7 @@ public class State
 
     public virtual void Enter()
     {
-        Debug.Log("Entered state " + character.name + " : " + this);
+        //Debug.Log("Entered state " + character.name + " : " + this);
     }
 
     public virtual void HandleInput() { }
@@ -35,6 +35,6 @@ public class State
 
     public virtual void Exit()
     {
-        Debug.Log("Exited state " + character.name + " : " + this);
+        //Debug.Log("Exited state " + character.name + " : " + this);
     }
 }

@@ -33,6 +33,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Flip",
+                    "type": "Button",
+                    "id": "079ea857-ba6d-4721-9b55-c1107085c8e6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Jump",
                     "type": "Button",
                     "id": "f61e315b-7a2f-463e-84ce-100014b986e4",
@@ -42,18 +51,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Sprint",
+                    "name": "Rewind",
                     "type": "Button",
-                    "id": "e65346c7-1cf9-40ec-9b50-9855ded68055",
+                    "id": "f9ca7d2a-3cc3-413d-a7e9-ef6f480af3d6",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Rewind",
+                    "name": "Sprint",
                     "type": "Button",
-                    "id": "f9ca7d2a-3cc3-413d-a7e9-ef6f480af3d6",
+                    "id": "e65346c7-1cf9-40ec-9b50-9855ded68055",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -311,6 +320,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Rewind",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "39c6333a-8d34-434d-8fdd-0770644740ab",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Flip",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
