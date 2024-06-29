@@ -149,6 +149,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5fc9061eddf516d439334d6370f24ee6,
         type: 3}
       insertIndex: -1
+      addedObject: {fileID: 8059688539744434836}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5fc9061eddf516d439334d6370f24ee6,
+        type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1673748147757751859}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5fc9061eddf516d439334d6370f24ee6,
         type: 3}
@@ -166,6 +170,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 4830078347359612839}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5fc9061eddf516d439334d6370f24ee6,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8095989867634161502}
   m_SourcePrefab: {fileID: 100100000, guid: 5fc9061eddf516d439334d6370f24ee6, type: 3}
 --- !u!4 &4039934370756807327 stripped
 Transform:
@@ -211,6 +219,33 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!54 &8059688539744434836
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7979717191465184220}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!114 &1673748147757751859
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -263,6 +298,8 @@ MonoBehaviour:
   speedDampTime: 0.1
   animationFadeTime: 0.1
   walkingSpeed: 5
+  runningSpeed: 5
+  sprintSpeed: 10
   rotationDampTime: 35
   groundLayerMask:
     serializedVersion: 2
@@ -270,10 +307,12 @@ MonoBehaviour:
   jumpHeight: 5
   jumpForwardVelocity: 10
   freeFallControlVelocity: 2
+  rewindPoints: []
   playerCamera: {fileID: 0}
   playerAnimatorManager: {fileID: 0}
   playerInputManager: {fileID: 0}
   playerMovementManager: {fileID: 0}
+  isRewinding: 0
 --- !u!114 &4160507545449883283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -309,6 +348,24 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
+  rewindAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 9bf78d74-baf1-4ec8-8325-5a25a4e839e3
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  sprintAction:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 63a57bb7-4d9a-444c-b2e3-25f34e02f29a
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!114 &4570756301106671342
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -335,3 +392,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 396f5097b72dd944c8b3d884963173f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8095989867634161502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7979717191465184220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cd4ebf2097526a4a8b53dd6c883e3bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxRewindDuration: 5
+  rewindSpeed: 10

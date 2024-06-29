@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,10 +11,18 @@ public class Player : Character
     public float jumpForwardVelocity = 5f;
     public float freeFallControlVelocity = 2f;
 
+    [Header("Rewind Controls")]
+    public List<Vector3> rewindPoints = new();
+
     [HideInInspector] public Camera playerCamera;
     [HideInInspector] public PlayerAnimatorManager playerAnimatorManager;
     [HideInInspector] public PlayerInputManager playerInputManager;
     [HideInInspector] public PlayerMovementManager playerMovementManager;
+
+    // Input bools
+    private bool rewindInput = false;
+
+    public bool isRewinding = false;
 
     protected override void Awake()
     {
@@ -29,6 +38,37 @@ public class Player : Character
     protected override void Start()
     {
         base.Start();
+
+        playerInputManager.rewindAction.performed += _ => rewindInput = true;
+    }
+
+    protected override void Update()
+    {
+        base.Update();
+
+        HandleInputs();
+    }
+
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
+
+        rewindPoints.Insert(0, transform.position);
+    }
+
+    private void HandleInputs()
+    {
+        if (rewindInput)
+        {
+            rewindInput = false;
+            SetRewindPoint();
+        }
+    }
+
+    private void SetRewindPoint()
+    {
+        transform.position = rewindPoints[0];
+        rewindPoints.RemoveAt(0);
     }
 
     public void OnGUI()

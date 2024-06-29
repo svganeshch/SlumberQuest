@@ -21,4 +21,11 @@ public class PlayerMovementManager : CharacterMovementManager
         horizontalInput = player.playerInputManager.horizontalInput;
         moveAmount = player.playerInputManager.moveAmount;
     }
+
+    protected override void HandleGroundCheck()
+    {
+        if (player.isRewinding) return;
+
+        base.HandleGroundCheck();
+    }
 }
