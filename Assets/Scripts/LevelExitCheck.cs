@@ -15,6 +15,12 @@ public class LevelExitCheck : MonoBehaviour
 
                 if (hud.r1 != null && hud.r2 != null && hud.r3 != null && hud.r4 != null)
                 {
+                    if (SceneManager.GetActiveScene().buildIndex == 2)
+                    {
+                        SceneManager.LoadScene(0, LoadSceneMode.Single);
+                        return;
+                    }
+
                     SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1, LoadSceneMode.Single);
                 }
             }

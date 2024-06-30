@@ -968,14 +968,17 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Controls
 
-    WASD - Move the player
+    WASD - Movement
 
-    Q - flip when all enemies are
-    same color (in sync)
+    Q - flip when all enemies are same
+    color (in sync)
 
     E - Hold to rewind time
 
-    Space - Jump'
+    F - To collect ruins and procced
+
+    Space
+    - Jump'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0369d2a202480ee44bbabe7a9d90219c, type: 2}
   m_sharedMaterial: {fileID: -3358459158926797014, guid: 0369d2a202480ee44bbabe7a9d90219c,
