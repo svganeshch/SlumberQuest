@@ -54,7 +54,7 @@ public class EnemyGravityState : State
             UpdateCoolDownMode();
         }
 
-        if (gcount >= 3)
+        if (gcount > 3)
         {
             enemy.spawnSpawner.gameObject.GetComponent<FlipObject>().flipSet = true;
             enemy.spawnSpawner.target.transform.SetParent(enemy.spawnSpawner.gameObject.transform);

@@ -133,7 +133,7 @@ public class Player : Character
                                     genemy.GetComponent<Rigidbody>().isKinematic = false;
                                     genemy.GetComponent<Rigidbody>().useGravity = true;
 
-                                    Destroy(genemy, 5);
+                                    Destroy(genemy.gameObject, 3);
                                 }
 
                                 flipObject.isFlipped = true;
