@@ -8,6 +8,7 @@ public class FlipObject : MonoBehaviour
 
     public bool isFlippable = true;
     public bool flipSet = false;
+    public bool isFlipped = false;
     public float rotationSpeed = 5.0f;
     private Quaternion targetRotation = Quaternion.Euler(180, 0, 0);
     private float angleThreshold = 1.0f;
@@ -36,6 +37,7 @@ public class FlipObject : MonoBehaviour
         {
             transform.rotation = targetRotation;
             flipSet = false;
+            isFlipped = true;
             targetRotation = transform.rotation * Quaternion.Euler(180, 0, 0);
             Debug.Log("flip completed");
         }

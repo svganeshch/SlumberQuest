@@ -21,7 +21,7 @@ public class CharacterMovementManager : MonoBehaviour
     protected float groundCheckSphereRadius = 0.3f;
     protected float groundedYVelocity = -20;
     protected float fallStartYVelocity = -5;
-    protected float inAirTime = 0;
+    public float inAirTime = 0;
     protected bool fallingVelocitySet = false;
     private bool isGrounded = false;
 

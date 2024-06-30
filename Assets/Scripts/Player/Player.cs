@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
 public class Player : Character
@@ -58,7 +59,7 @@ public class Player : Character
         base.Update();
 
         HandleInputs();
-
+        HandleFall();
         if (flipObject != null && flipObject.flipSet)
         {
             transform.localPosition = Vector3.zero;
@@ -105,6 +106,13 @@ public class Player : Character
                 {
                     if (hit.gameObject.TryGetComponent<FlipObject>(out FlipObject flipObject))
                     {
+                        if (flipObject.isFlipped)
+                        {
+                            transform.parent = null;
+                            flipObject.flipSet = true;
+                            return;
+                        }
+
                         if (gravityEnemyList.Count > 0)
                         {
                             if (gravityEnemyList.All(enemy => enemy.gravityMode == true))
@@ -117,6 +125,18 @@ public class Player : Character
                                 canRotate = false;
                                 disableGravity = true;
 
+                                // enable enemy gravity
+                                foreach (GravityEnemy genemy in gravityEnemyList)
+                                {
+                                    genemy.gravityMode = false;
+                                    genemy.GetComponent<NavMeshAgent>().enabled = false;
+                                    genemy.GetComponent<Rigidbody>().isKinematic = false;
+                                    genemy.GetComponent<Rigidbody>().useGravity = true;
+
+                                    Destroy(genemy, 5);
+                                }
+
+                                flipObject.isFlipped = true;
                                 flipObject.flipSet = true;
                             }
                             else
@@ -127,6 +147,14 @@ public class Player : Character
                     }
                 }
             }
+        }
+    }
+
+    private void HandleFall()
+    {
+        if (playerMovementManager.inAirTime > 20)
+        {
+            MenuManager.instance.ReloadCurrentScene();
         }
     }
 

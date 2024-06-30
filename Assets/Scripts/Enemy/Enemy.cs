@@ -27,8 +27,6 @@ public class Enemy : Character
     {
         idleState = new EnemyIdleState(this, characterStateMachine);
         enemyPursueState = new EnemyPursueState(this, characterStateMachine);
-
-        characterStateMachine.Initialize(idleState);
     }
 
     public void OnGUI()

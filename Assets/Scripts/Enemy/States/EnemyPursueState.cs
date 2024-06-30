@@ -21,12 +21,9 @@ public class EnemyPursueState : State
 
         enemy.navMeshAgent.SetDestination(enemy.playerTarget.transform.position);
 
-        if (enemy.navMeshAgent.remainingDistance >= enemy.navMeshAgent.stoppingDistance + 0.5f)
+        if (enemy.TryGetComponent<GravityEnemy>(out GravityEnemy gravityEnemy))
         {
-            if (enemy.TryGetComponent<GravityEnemy>(out GravityEnemy gravityEnemy))
-            {
-                stateMachine.ChangeState(gravityEnemy.enemyGravityState);
-            } 
-        }
+            stateMachine.ChangeState(gravityEnemy.enemyGravityState);
+        } 
     }
 }

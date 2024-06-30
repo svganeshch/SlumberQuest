@@ -15,15 +15,49 @@ public class EnemySpawner : MonoBehaviour
     public int patrolPointsCount = 4;
     private List<Vector3> patrolPoints = new List<Vector3>();
 
-    private void Start()
+    private bool isSpawned = false;
+
+    public Player target;
+
+    //private void Start()
+    //{
+    //    if (circleSpawn)
+    //    {
+    //        SpawnCircle();
+    //    }
+    //    else
+    //    {
+    //        //Spawn();
+    //    }
+    //}
+
+    private void Update()
     {
-        if (circleSpawn)
+        if (!isSpawned)
         {
-            SpawnCircle();
+            OnTargetEnter();
         }
-        else
+    }
+
+    private void OnTargetEnter()
+    {
+        Collider[] colliders = new Collider[1];
+        int colliderCount = Physics.OverlapSphereNonAlloc(
+            transform.position,
+            spawnRadius,
+            colliders,
+            LayerMaskManager.instance.playerLayerMask
+        );
+
+        for (int i = 0; i < colliderCount; i++)
         {
-            //Spawn();
+            //Debug.Log("collider : " + colliders[i].gameObject.name);
+            if (colliders[i].transform.TryGetComponent(out Player targetCharacter))
+            {
+                target = targetCharacter;
+                SpawnCircle();
+                isSpawned = true;
+            }
         }
     }
 
@@ -73,6 +107,7 @@ public class EnemySpawner : MonoBehaviour
             // Instantiate the prefab at the calculated position
             GameObject spawnedObj = Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
             spawnedObj.transform.LookAt(transform.position);
+            spawnedObj.GetComponent<GravityEnemy>().spawnSpawner = this;
 
             // Add the spawned object to the list
             spawnedObjs.Add(spawnedObj.GetComponent<Enemy>());
