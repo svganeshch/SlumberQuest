@@ -37,6 +37,9 @@ public class EnemyGravityState : State
         enemyMatDefColor = enemyMat.color;
         enemyMat.color = Color.red;
         enemy.audioSource.PlayOneShot(enemy.gravityCountSound);
+
+        gravFlipSet = false;
+        gcount = 0;
     }
 
     public override void LogicUpdate()
@@ -56,9 +59,19 @@ public class EnemyGravityState : State
 
         if (gcount > 3)
         {
-            enemy.spawnSpawner.gameObject.GetComponent<FlipObject>().flipSet = true;
-            enemy.spawnSpawner.target.transform.SetParent(enemy.spawnSpawner.gameObject.transform);
-            gcount = 0;
+            if (!gravFlipSet)
+            {
+                gravFlipSet = true;
+                enemy.spawnSpawner.gameObject.GetComponent<FlipObject>().flipSet = true;
+                enemy.spawnSpawner.target.transform.SetParent(enemy.spawnSpawner.gameObject.transform);
+                gcount = 0;
+            }
+        }
+
+        if (!enemy.spawnSpawner.target.GetComponent<Player>().playerAnimatorManager.IsGrounded)
+        {
+            stateMachine.ChangeState(enemy.idleState);
+            return;
         }
     }
 
@@ -95,5 +108,6 @@ public class EnemyGravityState : State
         base.Exit();
 
         enemy.audioSource.pitch = 1.0f;
+        enemyMat.color = enemyMatDefColor;
     }
 }

@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using static Unity.VisualScripting.Member;
 
 public class Player : Character
 {
@@ -19,13 +20,19 @@ public class Player : Character
     [HideInInspector] public PlayerInputManager playerInputManager;
     [HideInInspector] public PlayerMovementManager playerMovementManager;
 
+    public AudioClip deathSound;
+
     public List<GravityEnemy> gravityEnemyList = new();
-    FlipObject flipObject;
+    FlipObject currentGroundFlipObject;
+    FlipObject prevFlipObject;
+    GameObject currentGround;
+    EnemySpawner currentGroundSpawner;
 
     // Input bools
     private bool flipInput = false;
 
     public bool isRewinding = false;
+    public bool deathDone = false;
 
     protected override void Awake()
     {
@@ -60,7 +67,8 @@ public class Player : Character
 
         HandleInputs();
         HandleFall();
-        if (flipObject != null && flipObject.flipSet)
+
+        if (currentGroundFlipObject != null && currentGroundFlipObject.flipSet)
         {
             transform.localPosition = Vector3.zero;
             transform.rotation = Quaternion.identity;
@@ -78,7 +86,65 @@ public class Player : Character
     {
         if (flipInput)
         {
-            flipInput = false;
+            Debug.Log("flip input");
+
+            if (flipInput)
+            {
+                flipInput = false;
+                if (currentGround == null) return;
+
+                if (currentGround.gameObject.TryGetComponent<FlipObject>(out FlipObject flipObject))
+                {
+                    if (prevFlipObject != flipObject)
+                    {
+                        prevFlipObject = flipObject;
+                    }
+
+                    if (gravityEnemyList.Count > 0)
+                    {
+                        if (gravityEnemyList.All(enemy => enemy.gravityMode == true))
+                        {
+                            Debug.Log("flip on : " + flipObject.name);
+
+                            transform.SetParent(flipObject.transform);
+
+                            canMove = false;
+                            canRotate = false;
+                            disableGravity = true;
+
+                            // enable enemy gravity
+                            foreach (GravityEnemy genemy in gravityEnemyList)
+                            {
+                                genemy.gravityMode = false;
+                                genemy.GetComponent<NavMeshAgent>().enabled = false;
+                                genemy.GetComponent<Rigidbody>().isKinematic = false;
+                                genemy.GetComponent<Rigidbody>().useGravity = true;
+                                genemy.enabled = false;
+
+                                Destroy(genemy.gameObject, 3);
+                            }
+
+                            flipObject.flipSet = true;
+                            currentGroundSpawner.isCleared = true;
+                            gravityEnemyList.Clear();
+                            Debug.Log("enemy cleared count : " + gravityEnemyList.Count);
+                        }
+                        else
+                        {
+                            Debug.Log("Not all grav enemies are disabled");
+                        }
+                    }
+                    else if (flipObject.isFlipped)
+                    {
+                        flipObject.flipSet = true;
+                        canMove = true;
+                        canRotate = true;
+                        disableGravity = false;
+
+                        StartCoroutine(waitForReFlip());
+                    }
+                }
+            }
         }
     }
 
@@ -88,74 +154,61 @@ public class Player : Character
         {
             if (1 << hit.gameObject.layer == LayerMaskManager.instance.groundLayerMask)
             {
-                Debug.Log("ground : " + hit.gameObject.name);
+                currentGround = hit.gameObject;
+                Debug.Log("ground : " + currentGround.name);
 
-                if (gravityEnemyList.Count <= 0)
+                if (currentGround.TryGetComponent<EnemySpawner>(out currentGroundSpawner))
                 {
-                    if (hit.gameObject.TryGetComponent<EnemySpawner>(out EnemySpawner spawner))
+                    if (currentGroundSpawner != null)
                     {
-                        Debug.Log("recevied spawner : " +  spawner.gameObject.name);
-                        foreach (var enemy in spawner.spawnedObjs)
+                        if (currentGroundSpawner.isCleared) return;
+                        if (currentGroundSpawner.spawnCount == gravityEnemyList.Count) return;
+
+                        Debug.Log("recevied spawner : " + currentGround.gameObject.name);
+                        foreach (var enemy in currentGroundSpawner.spawnedObjs)
                         {
                             gravityEnemyList.Add(enemy.GetComponent<GravityEnemy>());
+                            Debug.Log("adding enemy : " + enemy.name);
                         }
                     }
                 }
-
-                if (flipInput)
-                {
-                    if (hit.gameObject.TryGetComponent<FlipObject>(out FlipObject flipObject))
-                    {
-                        if (flipObject.isFlipped)
-                        {
-                            transform.parent = null;
-                            flipObject.flipSet = true;
-                            return;
-                        }
-
-                        if (gravityEnemyList.Count > 0)
-                        {
-                            if (gravityEnemyList.All(enemy => enemy.gravityMode == true))
-                            {
-                                Debug.Log("flip on : " + flipObject.name);
-
-                                transform.SetParent(flipObject.transform);
-
-                                canMove = false;
-                                canRotate = false;
-                                disableGravity = true;
-
-                                // enable enemy gravity
-                                foreach (GravityEnemy genemy in gravityEnemyList)
-                                {
-                                    genemy.gravityMode = false;
-                                    genemy.GetComponent<NavMeshAgent>().enabled = false;
-                                    genemy.GetComponent<Rigidbody>().isKinematic = false;
-                                    genemy.GetComponent<Rigidbody>().useGravity = true;
-
-                                    Destroy(genemy.gameObject, 3);
-                                }
-
-                                flipObject.isFlipped = true;
-                                flipObject.flipSet = true;
-                            }
-                            else
-                            {
-                                Debug.Log("Not all grav enemies are disabled");
-                            }
-                        }
-                    }
-                }
+                Debug.Log("enemy count after: " + gravityEnemyList.Count);
             }
         }
     }
 
     private void HandleFall()
     {
-        if (playerMovementManager.inAirTime > 5)
+        if (!deathDone)
         {
-            MenuManager.instance.ReloadCurrentScene();
+            if (playerMovementManager.inAirTime > 2)
+            {
+                deathDone = true;
+                audioSource.PlayOneShot(deathSound);
+                StartCoroutine(waitForSound());
+            }
         }
+    }
+
+    IEnumerator waitForSound()
+    {
+        while (audioSource.isPlaying)
+        {
+            yield return null;
+        }
+
+        MenuManager.instance.ReloadCurrentScene();
+    }
+
+    IEnumerator waitForReFlip()
+    {
+        while (prevFlipObject.flipSet)
+        {
+            yield return null;
+        }
+        
+        prevFlipObject = null;
+        transform.parent = null;
     }
 
     public void OnGUI()

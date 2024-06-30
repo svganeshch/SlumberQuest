@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class State
 {
+    public static bool gravFlipSet;
+
     protected Character character;
     protected Player player;
     protected Enemy enemy;

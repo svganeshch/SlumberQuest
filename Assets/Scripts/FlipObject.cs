@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class FlipObject : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class FlipObject : MonoBehaviour
     public float rotationSpeed = 5.0f;
     private Quaternion targetRotation = Quaternion.Euler(180, 0, 0);
     private float angleThreshold = 1.0f;
+
+    public UnityEvent flipDone = new UnityEvent();
 
     private void Awake()
     {

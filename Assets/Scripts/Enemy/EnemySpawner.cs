@@ -9,6 +9,8 @@ public class EnemySpawner : MonoBehaviour
     public float circleSpawnSpacing = 1f;
     public bool circleSpawn = false;
 
+    public bool isCleared = false;
+
     public GameObject[] spawnPrefabs;
     public List<Enemy> spawnedObjs = new List<Enemy>();
 
