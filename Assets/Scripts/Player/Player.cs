@@ -49,6 +49,8 @@ public class Player : Character
     {
         base.Start();
 
+        spawner.instance.SpawnPrefabs();
+
         playerInputManager.flipAction.performed += _ => flipInput = true;
     }
 
