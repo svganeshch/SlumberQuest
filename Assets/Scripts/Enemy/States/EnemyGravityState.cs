@@ -49,6 +49,12 @@ public class EnemyGravityState : State
     {
         base.LogicUpdate();
 
+        if (!enemy.spawnSpawner.target.playerAnimatorManager.IsGrounded ||
+            enemy.spawnSpawner.target.transform.position != playerStartPos)
+        {
+            enemy.navMeshAgent.SetDestination(enemy.spawnSpawner.target.transform.position);
+        }
+
         if (enemy.gravityMode)
         {
             UpdateGravityMode();
@@ -67,11 +73,6 @@ public class EnemyGravityState : State
                 enemy.spawnSpawner.target.transform.SetParent(enemy.spawnSpawner.gameObject.transform);
                 gcount = 0;
             }
-        }
-
-        if (enemy.spawnSpawner.target.transform.position != playerStartPos)
-        {
-            enemy.navMeshAgent.SetDestination(enemy.playerTarget.transform.position);
         }
     }
 
