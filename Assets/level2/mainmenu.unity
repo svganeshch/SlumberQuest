@@ -971,7 +971,7 @@ MonoBehaviour:
     WASD - Move the player
 
     Q - flip when all enemies are
-    same color
+    same color (in sync)
 
     E - Hold to rewind time
 

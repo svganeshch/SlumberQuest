@@ -5,7 +5,8 @@ public class MainMenu : MonoBehaviour
 {
     public void PlayGame()
     {
-        SceneManager.LoadScene("Space"); // Replace with your game scene name
+        SceneManager.LoadScene(1, LoadSceneMode.Single);
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void QuitGame()

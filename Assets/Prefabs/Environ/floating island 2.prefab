@@ -123,4 +123,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isFlippable: 1
   flipSet: 0
-  rotationSpeed: 5
+  isFlipped: 0
+  rotationSpeed: 1
+  flipDone:
+    m_PersistentCalls:
+      m_Calls: []
