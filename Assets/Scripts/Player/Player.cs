@@ -152,7 +152,7 @@ public class Player : Character
 
     private void HandleFall()
     {
-        if (playerMovementManager.inAirTime > 20)
+        if (playerMovementManager.inAirTime > 5)
         {
             MenuManager.instance.ReloadCurrentScene();
         }
