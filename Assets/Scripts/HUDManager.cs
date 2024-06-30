@@ -74,7 +74,12 @@ public class HUDManager : MonoBehaviour
     {
         if (collectObj != null)
         {
+            collectImage.enabled = true;
             collectImageRectTransform.position = RectTransformUtility.WorldToScreenPoint(player.playerCamera, collectObj.position);
+        }
+        else
+        {
+            collectImage.enabled = false;
         }
     }
 

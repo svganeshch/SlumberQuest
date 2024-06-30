@@ -49,7 +49,7 @@ public class spawner : MonoBehaviour
         {
             GameObject prefab = prefabs[i];
             Transform spawnPoint = shuffledSpawnPoints[i];
-            GameObject spawnedPrefab = Instantiate(prefab, spawnPoint.position, Quaternion.identity, spawnPoint);
+            GameObject spawnedPrefab = Instantiate(prefab, spawnPoint);
             spawnedPrefab.SetActive(true);
         }
     }

@@ -18,6 +18,8 @@ public class EnemyGravityState : State
     private Material enemyMat;
     private Color enemyMatDefColor;
 
+    Vector3 playerStartPos;
+
     int gcount = 0;
 
     public EnemyGravityState(Character _character, StateMachine _stateMachine) : base(_character, _stateMachine)
@@ -30,6 +32,7 @@ public class EnemyGravityState : State
     public override void Enter()
     {
         base.Enter();
+        playerStartPos = enemy.spawnSpawner.target.transform.position;
 
         enemy.gravBoisSync.Add(enemy);
         enemy.gravityMode = true;
@@ -45,8 +48,6 @@ public class EnemyGravityState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-
-        //enemy.navMeshAgent.SetDestination(enemy.playerTarget.transform.position);
 
         if (enemy.gravityMode)
         {
@@ -68,10 +69,9 @@ public class EnemyGravityState : State
             }
         }
 
-        if (!enemy.spawnSpawner.target.GetComponent<Player>().playerAnimatorManager.IsGrounded)
+        if (enemy.spawnSpawner.target.transform.position != playerStartPos)
         {
-            stateMachine.ChangeState(enemy.idleState);
-            return;
+            enemy.navMeshAgent.SetDestination(enemy.playerTarget.transform.position);
         }
     }
 
