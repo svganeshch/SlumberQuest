@@ -128,7 +128,7 @@ MonoBehaviour:
   isFlippable: 1
   flipSet: 0
   isFlipped: 0
-  rotationSpeed: 1
+  rotationSpeed: 2
   flipDone:
     m_PersistentCalls:
       m_Calls: []

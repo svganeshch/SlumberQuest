@@ -139,9 +139,6 @@ public class Player : Character
                     else if (flipObject.isFlipped)
                     {
                         flipObject.flipSet = true;
-                        canMove = true;
-                        canRotate = true;
-                        disableGravity = false;
 
                         StartCoroutine(waitForReFlip());
                     }
@@ -211,6 +208,10 @@ public class Player : Character
         
         prevFlipObject = null;
         transform.parent = null;
+
+        canMove = true;
+        canRotate = true;
+        disableGravity = false;
     }
 
     public void OnGUI()
