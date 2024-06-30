@@ -13,6 +13,7 @@ public class PlayerInputManager : MonoBehaviour
     [HideInInspector] public PlayerInput input;
 
     // Input actions
+    [HideInInspector] public InputAction collectAction;
     [HideInInspector] public InputAction moveAction;
     [HideInInspector] public InputAction flipAction;
     [HideInInspector] public InputAction jumpAction;
@@ -23,6 +24,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         input = GetComponent<PlayerInput>();
 
+        collectAction = input.actions["Collect"];
         flipAction = input.actions["Flip"];
         jumpAction = input.actions["Jump"];
         rewindAction = input.actions["Rewind"];

@@ -11,6 +11,7 @@ public class LayerMaskManager : MonoBehaviour
     public LayerMask playerLayerMask;
     public LayerMask enemyLayerMask;
     public LayerMask obstacleLayerMask;
+    public LayerMask collectableMask;
 
     private void Awake()
     {

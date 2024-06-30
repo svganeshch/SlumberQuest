@@ -63,6 +63,60 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: f741a0fa34aa7b243bf0762ecc5f74cc, type: 2}
   m_BuildHeightMesh: 0
+--- !u!1 &5184604061421540961
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4658872515532798033}
+  - component: {fileID: 2470508557980184391}
+  m_Layer: 0
+  m_Name: RockSpawners
+  m_TagString: Untagged
+  m_Icon: {fileID: 8418204508859773708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4658872515532798033
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5184604061421540961}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5541607496015493641}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2470508557980184391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5184604061421540961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a780a8f5760fb6d479c983c5a78cfc44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabs:
+  - {fileID: 5376495489241516372, guid: 6d1ea86cacd81814e91cc9d13c5abcb4, type: 3}
+  - {fileID: 5555957757008279848, guid: f4192aa0411e0a245af921a399c6c58d, type: 3}
+  - {fileID: 5773023855691103428, guid: bb1787b20d8fc57409b59987575c903a, type: 3}
+  - {fileID: 3621953376420769599, guid: a62b91f73b8a33d43a4e369bb33caf7a, type: 3}
+  spawnPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &6333355203448721145
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,6 +217,9 @@ MonoBehaviour:
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 1
+  collectableMask:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!1 &8774776520535623941
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,5 +252,6 @@ Transform:
   - {fileID: 1284704866964616452}
   - {fileID: 6101227144926410956}
   - {fileID: 59066425082218174}
+  - {fileID: 4658872515532798033}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
